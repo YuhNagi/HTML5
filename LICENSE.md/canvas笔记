@@ -1,0 +1,195 @@
+1.canvas基本概念
+
+w3c：
+http://www.w3school.com.cn/tags/html_ref_canvas.asp
+
+http://blog.csdn.net/MR_LP/article/details/51908848
+ 兼容：IE9（含）以上及标准浏览器都支持。
+
+ 能实现的功能： 
+    基础图形的绘制
+    文字的绘制
+    图形的变形和图片的合成
+    图片和视频的处理
+    动画的实现
+    小游戏的制作
+
+默认东西：默认样式的宽度和高度 是 300px * 150px.
+修改画布： 如果使用JS或者在样式表里修改的话，是使默认的 300 * 150 的图片强行拉伸为 500px * 500px 了，这样会导致我们的内容被强行缩放，从而导致问题。
+所以推荐在行内设置。
+  canvas_1.width = "500"; //注意，不要加 px
+ canvas_1.height = "500";
+或者<canvas width="500" height="500"></canvas>
+
+2.获取绘制环境
+	var oC1=document.getElementById('c1');
+	var ctx=oC1.getContext('2d');
+
+绘制的坐标轴为： 横轴向右是正，纵轴向下是正。
+
+3.开始绘制直线
+
+一些要用到的方法：
+绘制必要素：
+beginPath() 	开始定义路径
+closePath() 	关闭前面定义的路径
+moveTo(float x,float y) 	设置绘制起点
+lineTo(float x,float y) 	设置绘制终点
+
+绘制路径：
+fill() 	   给当前路径进行填充效果
+stroke()   给当前路径绘制边框
+rect(起点x坐标,y,w,h)     矩形区域
+clearRect(起点x坐标,y,w,h) 删除一个画布的矩形区域
+save()      保存路径
+restore()   恢复路径
+
+绘制修饰属性：
+ctx.fillStyle="颜色值"	设置填充 canvas 路径所使用的填充风格
+strokeStyle = '颜色值' 	设置绘制 canvas 路径的线的填充风格
+lineJoin 	设置返回所创建边角的类型，当两条线交汇时。一定要设置在你的绘制矩形框之前，参数如下；
+ -bevel 	创建斜角
+ -round 	创建圆角
+ -miter 	默认，创建尖角
+
+小实例： 绘制一个三角形
+注意：所有的绘制相应属性全部应该放在 closePath 之前
+	ctx.beginPath();
+	ctx.moveTo(100,100); //设置起点
+	ctx.lineTo(200,200); //设置终点
+	ctx.lineTo(100,300);  //设置第二个终点
+	ctx.strokeStyle = 'red'; //设置线的颜色
+	ctx.lineWidth = 10;   //设置绘制线条宽度
+	ctx.closePath();     //结束绘制，放在绘制方式前面，才会自动连接关闭线条
+	ctx.stroke();        //指定绘制方式（线、填充）
+
+快速绘制方块：
+ctx.fillRect(L,R,W,H)  填充式方块 参数：左边距，上边距，宽度，高度
+ctx.strokeRect(L,R,W,H);  边框式方块
+注：
+	ctx.strokeRect(50,50,100,100); //因为它的边框会围绕50像素的地方向两边各伸展0.5个像素，然后系统自动填充，就形成了2px的边框了。
+	
+4.绘制圆
+ ctx.arc(起点x轴,起点y轴,半径，起始弧度，结束弧度，旋转方向);
+ 弧度计算公式： 弧度=角度*Math.PI/180
+ 旋转方向： true：  逆时针  false： 顺时针
+
+注意！！圆的起始点是时钟的3点的地方。
+小实例：制件一个时钟
+
+
+5.绘制其他曲线
+  arcTO(x1,y1,x2,y2,r)  第一组x,y坐标,第二组x,y坐标，半径
+ 贝塞尔曲线：
+  a. quadraticCurveTo(dx,dy,x1,y1);  第一组控制点，第二组结束坐标
+  b. bezierCurveTo(dx1,dy1,dx2,dy2,x1,y1);  第一组控制点，第二组控制点，第三组结束坐标
+
+    ctx.moveTo(100,200);
+	ctx.arcTo(100,100,200,100,50);
+	ctx.stroke();
+
+	ctx.moveTo(100,200);
+	ctx.quadraticCurveTo(100,100,200,100);
+	ctx.stroke();
+//这一段会画一条从起点到quadraticCurveTo的结束坐标的线，但是会往控制点方向偏
+
+
+6.Canvas变换（同CSS3里的变换有点类似）
+ translate(x,y)： 偏移 以起始点为基准，相当于把起始点移动到参数内的位置，在它之后绘图会以它为起始点进行定位
+ rotate(弧度)  旋转  会以起始点为基准，顺时针旋转参数的角度
+ scale（宽的比例，高的比例） 缩放  它会以元素原本的比例进行缩放
+
+
+7.图片
+一、插入图片
+必须等图片加载完成后，才能执行canvas操作。
+Img.onload方法： 图片预加载完才会触发此方法
+ctx.drawImage(oImg,x,y,w,h); 参数：当前加载图片，x,y坐标，宽高  不设置宽高的话图片会自适应
+imageObject.complete ： 如果图像加载完成，则返回 true，否则返回 fasle。
+
+旋转图片参考示例： (比如微博图片旋转:自己还没做出来，因为坐标的逻辑还没理解过来。)
+http://qings.blog.51cto.com/4857138/997998/
+
+二、设置背景
+ createPattern(oImg,平铺方式);  第二个参数可选项为：repeat, repeat-x/y,no-repeat
+
+ 8.渐变
+ 一、线性渐变
+createLinearGradient(x1,y1,x2,y2); 
+	参数： 第一组坐标表示渐变起点坐标，第二组表示终点坐标
+addColorStop(0,color)  
+	参数：第一个：0代表起点，1代表终点，还可设中间点0.5什么的  第二个：表渐变颜色
+例：
+	var gradient = ctx.createLinearGradient(150,100,250,200);
+	gradient.addColorStop(0,'green');
+	gradient.addColorStop(1,'red');
+	ctx.fillStyle= gradient;
+	ctx.fillRect(150,100,100,100);
+
+二、放射性渐变
+createRadialGradient(x1,y1,r1,x2,y2,r2);
+	参数：第一组是第一个圆的坐标和半径  第二组则是第二个的
+
+三、文本
+1. 文字填充
+strokeText(文字,x,y);  文字边框
+fillText(文字,x,y);   文字填充
+ctx.font = '大小，样式' 样式不多，但必须得要，比如impact,没有特定字体时，其他任意字符也可以。
+textAlign  默认是start(效果和left一样)，其他还有end, right, center
+textBaseline  文本上下的位置方式  默认：alphabetic，其它还有： top middle bottom
+
+2.文字宽度
+ctx.measureText(str).width  返回一个文本的宽度
+ 参数： str即填充的文字，width指宽度
+ 如果需要在文本向画布输出之前，就了解文本的宽度，那么就可以使用该方法。
+
+ //小例子：文字居中
+	ctx.font = '30px Arial';
+	ctx.textBaseline = 'top';
+	var w = ctx.measureText('IBM').width;
+	ctx.fillText('IBM',(oC.width-w)/2,(oC.height-30)/2);
+
+3.文字阴影
+shadowOffsetX/Y  阴影X/Y轴偏移量
+shadowColor    阴影颜色,默认是黑色透明
+shadowBlur     高斯模糊值
+
+四、图像像素操作
+1.getImageData(x,y,w,h);
+2.putImageData(图像,x,y)
+3.createImageData(w,h) 创建个新的像素矩阵.  初始值是全透明的黑色，
+图像属性：
+  width: 一行像素个数 height: 一列像素个数   data: 每一个data都有四个值（rgba）,，是一个数组集合
+
+globalAlpha属性： 设置或返回绘图的当前透明值
+globalCompositeOperation属性： （当两个图形有重叠部分时）设置或返回如何将一个源（新的）图像绘制到目标（已有）的图像上
+源图像 = 打算放置到画布上的绘图。
+目标图像 = 已经放置在画布上的绘图。
+
+参数有：
+http://www.w3school.com.cn/tags/canvas_globalcompositeoperation.asp
+
+SR
+先说11/11的更新点：
+1. 如果输入ICN后，提示在CC和Retain上都没有，但是有SO的popup时，不管是否有合约，都案内客户去做SR。
+如果客户说ICN起不了票的时候，可以让他去问srhelpdesk@us.ibm.com。
+如果客户实在不纳得的话，可以说“跟担当部门商量下”挂掉电话，作一个新的PMR+#Decline然后Q到Ｌ1说明经过，平日的话再在Chat上报告下。
+
+然后如果是关于确认合约的问题在SR上起不了票的时候，也可以案内srhelpdesk@us.ibm.com
+
+2.关于在SR上选不了EOS版本的情况 
+如果客户来了这样问询的话，
+A.  如果我们确认到有PK或者SH有延长，而且也有现行版本合约的话，可以案内客户选跟EOS相近的版本，并在写问题栏写上【延长合约】起票就好
+B. 如果是有PK和SH的延长，而没有现行的话，和上面的案内步骤一样，只是还要多一步案内客户去跟营业确认现行版本的合约。
+
+又或者SH上有别的ICN有现行合约，这个做法同上面的1一样，不过还要案内去营业确认现行的合约么？？？★★
+
+B. 没有延长的话，直接拒绝。 让客户去去确认延长合约？？？★★
+
+3.ISC直接忽略SO的popup就好。
+如果客户进错线了的话，一定要案内客户正确的电话号码。
+
+
+
+
+

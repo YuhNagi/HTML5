@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Canvas复习</title>
+<style>
+body{background:#000;}
+#c1{ background:#fff;  }
+span{ color:#fff; }
+</style>
+<script>
+window.onload = function(){
+	var oC1=document.getElementById('c1');
+	var ctx=oC1.getContext('2d'); //获取绘制环境
+	
+	/*ctx.moveTo(100,200);
+	ctx.arcTo(100,100,200,100,50);
+	ctx.stroke();*/
+
+//quadraticCurveTo
+/*	ctx.moveTo(100,200);
+	ctx.quadraticCurveTo(100,100,200,100);
+	ctx.stroke();*/
+
+
+// bezierCurveTo
+/*	ctx.moveTo(100,300);
+	ctx.bezierCurveTo(200,200,100,100,200,50);
+	ctx.stroke();*/
+
+	ctx.moveTo(120,50);
+	ctx.quadraticCurveTo(130,200,80,250);
+	ctx.stroke();
+
+	ctx.moveTo(120,50);
+	ctx.lineTo(280,50);
+	ctx.stroke();
+
+	ctx.moveTo(280,50);
+	ctx.lineTo(280,260);
+	ctx.lineTo(250,200);
+	ctx.stroke();
+
+	ctx.moveTo(150,100);
+	ctx.lineTo(250,100);
+	ctx.stroke();
+
+	ctx.moveTo(150,120);
+	ctx.lineTo(250,120);
+	ctx.stroke();
+
+
+	ctx.moveTo(200,80);
+	ctx.lineTo(200,120);
+	ctx.stroke();
+
+	ctx.moveTo(180,130);
+	ctx.strokeRect(180,130,40,40);
+}
+</script>
+</head>
+<body>
+<canvas id="c1" width="500" height="500">
+	<span>您的浏览器不支持Canvas，请升级...</span>
+</canvas>
+
+</body>
+</html>

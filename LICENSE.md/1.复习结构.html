@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Canvas复习</title>
+<style>
+body{background:#000;}
+#c1{ background:#fff;  }
+span{ color:#fff; }
+</style>
+<script>
+window.onload = function(){
+	var oC1=document.getElementById('c1');
+	var ctx=oC1.getContext('2d'); //获取绘制环境
+	// console.log(ctx); //测试是否获取环境成功
+
+	// 绘制一个三角形
+/*	ctx.beginPath();
+	ctx.moveTo(100,100); //设置起点
+	ctx.lineTo(200,200); //设置终点
+	ctx.lineTo(100,300);  //设置第二个终点
+	ctx.strokeStyle = 'red'; //设置线的颜色
+	ctx.lineWidth = 1;   //设置绘制线条宽度
+	ctx.closePath();     //结束绘制，放在绘制方式前面，才会自动连接关闭线条
+	ctx.stroke(); */       //指定绘制方式（线、填充）
+
+	// 绘制一个矩形
+/*	ctx.beginPath();
+	ctx.moveTo(100,100);
+	ctx.lineTo(200,100);
+	ctx.lineTo(200,200);
+	ctx.lineTo(100,200);
+	ctx.fillStyle = "green";
+	// ctx.lineWidth = 5;
+	ctx.closePath();
+	ctx.fill();*/
+
+	//直接绘制方块
+	// ctx.fillRect(100,100,200,200); //填充方块：
+	// ctx.strokeRect(50,50,100,100); //因为它的边框会围绕50像素的地方向两边各伸展0.5个像素，然后系统自动填充，就形成了2px的边框了。
+	// ctx.lineJoin = 'bevel';
+	// ctx.lineWidth = 10;
+	// ctx.strokeRect(150.5,150.5,100,100);
+
+
+	//绘制字符串
+/*	ctx.font = "bold 40px 宋体";
+	ctx.fillText('Nagi',200,200,100);
+	ctx.strokeStyle = 'red';*/
+	// ctx.strokeText('Nagi',200,200,100);
+
+/*	ctx.fillStyle = '#00f';
+    ctx.font = 'italic 50px 隶书';
+    ctx.textBaseline = 'top';*/
+
+    // 绘制圆
+    ctx.beginPath();
+    ctx.moveTo(200,200); //先设置画布的起点，可以产生从圆心到圆结束点之间画条直线，其它不知道还有啥用。
+    // ctx.lineTo(150,150);
+    ctx.arc(200,200,50,0,90*Math.PI/180,true);    
+    ctx.closePath();
+    ctx.stroke();
+
+
+
+}
+</script>
+</head>
+<body>
+<canvas id="c1" width="500" height="500">
+	<span>您的浏览器不支持Canvas，请升级...</span>
+</canvas>
+
+</body>
+</html>

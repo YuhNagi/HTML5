@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Canvas复习</title>
+<style>
+body{background:#000;}
+#c1{ background:#fff;  }
+span{ color:#fff; }
+</style>
+<script>
+window.onload = function(){
+	var oC1=document.getElementById('c1');
+	var ctx=oC1.getContext('2d'); //获取绘制环境
+
+	var oImg = new Image(); //可以创建一个新对象，也可以获取DOM中的img元素。
+	oImg.src= '1.jpg';
+	oImg.onload = function(){
+		ctx.rotate(90*Math.PI/180)
+		ctx.drawImage(oImg,100,100);
+		// ctx.drawImage(oImg,100,-100);
+	}
+
+}
+</script>
+</head>
+<body>
+<canvas id="c1" width="500" height="500">
+	<span>您的浏览器不支持Canvas，请升级...</span>
+</canvas>
+
+</body>
+</html>
