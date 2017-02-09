@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Canvas-模拟时钟</title>
+<style>
+body{background:#000;}
+#c1{ background:#fff;  }
+span{ color:#fff; }
+</style>
+<script>
+window.onload = function(){
+	var oC1=document.getElementById('c1');
+	var ctx=oC1.getContext('2d'); //获取绘制环境
+	
+	//分钟有60格，时钟有12格
+/*	ctx.beginPath();
+	ctx.moveTo(200,200);
+	ctx.arc(200,200,150,0,180*Math.PI/180,false);
+	ctx.closePath();
+	ctx.stroke();*/
+	function toDraw(){
+		var x =200;
+		var y=200;
+		var r=150;
+		var oDate = new Date();
+		var oHour = oDate.getHours();
+		var oMin = oDate.getMinutes();
+		var oSec = oDate.getSeconds();
+		// console.log(oHour);
+		var oHvalue = (-90+ oHour*30+ oMin/3)*Math.PI/180;
+		var oMvalue = (-90 + oMin*6 )*Math.PI/180;
+		var oSvalue = (-90 + oSec*6) *Math.PI/180;
+
+		ctx.clearRect(0,0,oC1.width,oC1.height);
+
+
+	//先画分钟的表盘
+		ctx.beginPath();
+		for(var i=0;i<60;i++){
+			ctx.moveTo(x,y);
+			ctx.arc(x,y,r,i*6*Math.PI/180,(i+1)*6*Math.PI/180,false);
+		}
+		ctx.stroke();
+		ctx.closePath();
+
+		ctx.beginPath();
+		ctx.moveTo(x,y);
+		ctx.arc(x,y,r*19/20,0,360*Math.PI/180,false);
+		ctx.fillStyle = '#fff';
+		ctx.fill();
+		ctx.closePath();
+
+	//再来时钟的表盘
+		ctx.beginPath();
+		for(var i=0;i<12;i++){
+			ctx.moveTo(x,y);
+			ctx.arc(x,y,r,i*30*Math.PI/180,(i+1)*30*Math.PI/180,false);
+		}	
+		ctx.lineWidth =2;
+		ctx.stroke();
+		ctx.closePath();
+
+		// 再画个白圆盖住时钟多出的线条部分
+		ctx.beginPath();
+		ctx.moveTo(x,y);
+		ctx.arc(x,y,r*17/20,0,360*Math.PI/180,false)
+		ctx.fillStyle = '#fff';
+		ctx.fill();
+		ctx.closePath();
+
+		// 接下来画时针，分针和秒针
+		ctx.beginPath();
+		ctx.moveTo(x,y);
+		ctx.lineWidth = 4;
+		ctx.arc(x,y,r*10/20,oHvalue,oHvalue);
+		//用lineTo画的话不好求弧度。让它的弧度一样就不会画出弧形，而只是直线了。
+		ctx.stroke();
+		ctx.closePath();
+
+		ctx.beginPath();
+		ctx.moveTo(x,y);
+		ctx.arc(x,y,r*13/20,oMvalue,oMvalue);
+		ctx.lineWidth = 3;
+		ctx.stroke();
+		ctx.closePath();
+
+		ctx.beginPath();
+		ctx.moveTo(x,y);
+		ctx.arc(x,y,r*15/20,oSvalue,oSvalue);
+		ctx.lineWidth = 1;
+		ctx.stroke();
+		ctx.closePath();
+	}
+
+	toDraw();
+
+	setInterval(function(){
+		toDraw();
+	},1000);
+
+}
+</script>
+</head>
+<body>
+<canvas id="c1" width="500" height="500">
+	<span>您的浏览器不支持Canvas，请升级...</span>
+</canvas>
+
+</body>
+</html>
